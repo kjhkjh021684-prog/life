@@ -49,7 +49,9 @@ button{cursor:pointer}.cta{margin-top:22px;padding:14px 20px;border-radius:999px
 </div>
 
 <label style="margin-top:18px">현재 체중</label>
-<div class="stepper"><button onclick="stepWeight(-1)">−</button><b><span id="weightVal">70</span> kg</b><button onclick="stepWeight(1)">＋</button></div>
+<div class="selectRow" id="weightTens"></div>
+<div class="selectRow" id="weightOnes" style="margin-top:8px"></div>
+<div style="margin-top:10px;font-size:22px;font-weight:900"><span id="weightVal">70</span> kg</div>
 
 <label style="margin-top:18px">평균 수면시간</label>
 <div class="selectRow" id="sleepChoices"></div>
@@ -180,13 +182,20 @@ function initSetup(){
 }
 function renderSetupChoices(){
  weightVal.textContent=setupState.weight.toFixed(0);
+ let tens=Math.floor(setupState.weight/10)*10,ones=setupState.weight%10;
+ weightTens.innerHTML=[40,50,60,70,80,90,100,110,120].map(v=>`<button class="choice ${tens===v?'active':''}" onclick="setWeightPart('tens',${v})">${v}</button>`).join('');
+ weightOnes.innerHTML=[0,1,2,3,4,5,6,7,8,9].map(v=>`<button class="choice ${ones===v?'active':''}" onclick="setWeightPart('ones',${v})">${v}</button>`).join('');
  sleepChoices.innerHTML=[5,6,7,8,9].map(v=>`<button class="choice ${setupState.sleep===v?'active':''}" onclick="setSetup('sleep',${v})">${v}${v===9?'+':''}시간</button>`).join('');
  exerciseChoices.innerHTML=[0,30,60,90,150,210].map(v=>`<button class="choice ${setupState.exercise===v?'active':''}" onclick="setSetup('exercise',${v})">${v}${v===210?'+':''}분</button>`).join('');
  healthChoices.innerHTML=[[2,'좋음'],[1,'보통'],[0,'좋지 않음']].map(x=>`<button class="choice ${setupState.health===x[0]?'active':''}" onclick="setSetup('health',${x[0]})">${x[1]}</button>`).join('');
  smokeChoices.innerHTML=[[0,'비흡연'],[1,'흡연']].map(x=>`<button class="choice ${setupState.smoke===x[0]?'active':''}" onclick="setSetup('smoke',${x[0]})">${x[1]}</button>`).join('');
 }
 function setSetup(k,v){setupState[k]=v;renderSetupChoices()}
-function stepWeight(v){setupState.weight=Math.min(150,Math.max(35,setupState.weight+v));renderSetupChoices()}
+function setWeightPart(part,v){
+ let tens=Math.floor(setupState.weight/10)*10,ones=setupState.weight%10;
+ if(part==='tens')tens=v;else ones=v;
+ setupState.weight=tens+ones;renderSetupChoices();
+}
 function createLife(){
  const birth=`${birthY.value}-${birthM.value}-${birthD.value}`;
  S={p:{birth,w:setupState.weight,s:setupState.sleep,e:setupState.exercise,h:setupState.health,sm:setupState.smoke},days:{}};
@@ -217,17 +226,24 @@ function render(){
  questions.innerHTML=Q.map(q=>`<div class="q"><div><b>${q[1]}</b><div class="reward">YES = +${q[2]} LIFE DAY</div></div><div class="yn"><button class="choice ${view[q[0]]===true?'yes':''}" onclick="answer('${q[0]}',true)">YES</button><button class="choice ${view[q[0]]===false?'yes':''}" onclick="answer('${q[0]}',false)">NO</button></div></div>`).join('');
  let answered=Q.filter(q=>view[q[0]]!==undefined).length,yes=Q.filter(q=>view[q[0]]===true).length;
  todayScore.textContent=yes+' YES · '+answered+'/'+Q.length+' ANSWERED';
- todayEarn.textContent=saved.saved&&!editingToday?'TODAY SAVED · +'+earned(saved).toFixed(2)+' LIFE DAYS':'선택 후 SAVE TODAY를 눌러 확정하세요.';
+ todayEarn.textContent=saved.saved&&!editingToday
+ ? 'TODAY SAVED · +'+earned(saved).toFixed(2)+' LIFE DAYS · 답변을 다시 누르면 바로 수정할 수 있습니다.'
+ : (editingToday?'수정 후 SAVE CHANGES를 눌러주세요.':'선택 후 SAVE TODAY를 눌러 확정하세요.');
  saveTodayBtn.style.display=saved.saved&&!editingToday?'none':'inline-block';
+ saveTodayBtn.textContent=editingToday?'SAVE CHANGES':'SAVE TODAY';
  editTodayBtn.style.display=saved.saved&&!editingToday?'inline-block':'none';
 
  renderFocus();renderMood();renderEarned();renderReview();drawLife();
 }
 function answer(k,v){
  let saved=S.days[td()]||{};
- if(saved.saved&&!editingToday)return;
+ if(saved.saved&&!editingToday){
+   editingToday=true;
+   draft={...saved};
+ }
  if(!Object.keys(draft).length)draft={...saved};
- draft[k]=v;render();
+ draft[k]=v;
+ render();
 }
 function saveToday(){
  let answered=Q.filter(q=>draft[q[0]]!==undefined).length;
@@ -235,7 +251,7 @@ function saveToday(){
  let prev=S.days[td()]||{};
  S.days[td()]={...prev,...draft,saved:true,savedAt:new Date().toISOString()};
  draft={};editingToday=false;save();render();
- alert('TODAY SAVED\\n+'+earned(S.days[td()]).toFixed(2)+' LIFE DAYS');
+ alert((editingToday?'CHANGES SAVED':'TODAY SAVED')+'\\n+'+earned(S.days[td()]).toFixed(2)+' LIFE DAYS');
 }
 function editToday(){draft={...(S.days[td()]||{})};editingToday=true;render()}
 function renderFocus(){
