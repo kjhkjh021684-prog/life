@@ -2,310 +2,100 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LIFE — Earn Your Days</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#070707">
+<title>LIFE</title>
 <style>
-*{box-sizing:border-box}
-:root{--bg:#070707;--card:#111;--line:#2b2b2b;--fg:#f5f5ef;--muted:#8a8a82;--lime:#d9ff43}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,Arial,sans-serif}
-.wrap{max-width:1080px;margin:auto;padding:22px}
-.top{position:sticky;top:0;z-index:20;background:rgba(7,7,7,.92);backdrop-filter:blur(10px);display:flex;justify-content:space-between;align-items:center;padding:14px 0;font-size:11px;font-weight:900;letter-spacing:.14em}
-.logo{cursor:pointer}.nav{display:flex;gap:14px}.nav button{border:0;background:none;color:#8b8b84;padding:0;font-size:10px;letter-spacing:.12em}
-.hidden{display:none}.setup{max-width:760px;margin:48px auto 80px}.setup h1{font-size:clamp(48px,7vw,78px);line-height:.95;letter-spacing:-.06em;margin:16px 0 14px}.sub{color:var(--muted);line-height:1.6;margin-bottom:28px}
-.k{font-size:10px;letter-spacing:.15em;color:var(--muted);font-weight:900;margin-bottom:14px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.wide{grid-column:1/-1}
-.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:22px}
-label{font-size:13px;font-weight:800;display:block;margin-bottom:8px}
-.selectRow{display:flex;gap:8px;flex-wrap:wrap}.choice{border:1px solid #333;background:#151515;color:white;border-radius:999px;padding:11px 14px;font-weight:800;cursor:pointer}.choice.active,.primary,.yes{background:var(--lime);border-color:var(--lime);color:#111}
-select{width:100%;background:#0b0b0b;color:white;border:1px solid #333;border-radius:12px;padding:12px;font-size:15px}
-.dateGrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.stepper{display:flex;align-items:center;justify-content:space-between;background:#0b0b0b;border:1px solid #333;border-radius:14px;padding:7px}.stepper button{width:42px;height:42px;border-radius:50%;border:1px solid #333;background:#171717;color:white;font-size:20px}.stepper b{font-size:22px}
-button{cursor:pointer}.cta{margin-top:22px;padding:14px 20px;border-radius:999px;border:1px solid var(--lime);font-weight:900}
-.hero{padding:55px 0 28px}.heroNum{font-size:clamp(90px,18vw,190px);font-weight:950;line-height:.75;letter-spacing:-.085em}.heroLabel{font-size:clamp(28px,4vw,48px);font-weight:900;margin-top:22px}
-.meta{display:flex;gap:26px;flex-wrap:wrap;margin-top:24px;align-items:end}.meta .n{font-size:44px;color:var(--lime);font-weight:950}.meta span{display:block;color:#777;font-size:9px;letter-spacing:.12em}
-.q{border-top:1px solid #292929;padding:14px 0;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}.q:first-child{border-top:0}.reward{font-size:11px;color:var(--lime);margin-top:4px}.yn{display:flex;gap:6px}.yn button{min-width:58px}
-.score{font-size:50px;font-weight:950}.muted{color:var(--muted);line-height:1.55}.progress{height:8px;background:#232323;border-radius:99px;overflow:hidden;margin:12px 0}.bar{height:100%;background:var(--lime)}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stat{border-top:1px solid #333;padding-top:12px}.stat b{font-size:27px}.stat span{display:block;color:#777;font-size:9px;margin-top:5px}
-.lifegrid{display:grid;grid-template-columns:repeat(52,1fr);gap:2px;margin-top:16px}.wk{aspect-ratio:1;background:#222}.used{background:#666}.now{background:var(--lime)}
-.footer{padding:38px 0;color:#555;font-size:10px;display:flex;justify-content:space-between}.topBtn{position:fixed;right:20px;bottom:20px;display:none;border:0;background:var(--lime);color:#111;border-radius:999px;padding:12px 14px;font-weight:900}.topBtn.show{display:block}
-@media(max-width:720px){.grid{grid-template-columns:1fr}.wide{grid-column:auto}.stats{grid-template-columns:1fr 1fr}.dateGrid{grid-template-columns:1fr}.lifegrid{grid-template-columns:repeat(26,1fr)}.q{grid-template-columns:1fr}.wrap{padding:15px}}
+*{box-sizing:border-box} :root{--bg:#070707;--card:#111;--line:#292929;--fg:#f6f6ef;--muted:#8c8c84;--lime:#d9ff43}
+html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,Arial,sans-serif}.wrap{max-width:1050px;margin:auto;padding:18px}
+.top{position:sticky;top:0;z-index:30;background:rgba(7,7,7,.94);backdrop-filter:blur(10px);display:flex;justify-content:space-between;align-items:center;padding:14px 0}.logo{font-weight:950;letter-spacing:.16em;cursor:pointer}.nav{display:flex;gap:13px}.nav button{border:0;background:none;color:#888;font-size:10px;font-weight:900;letter-spacing:.1em;padding:6px 0}
+.hidden{display:none!important}.k{font-size:10px;letter-spacing:.15em;color:var(--muted);font-weight:900;margin-bottom:13px}.muted{color:var(--muted);line-height:1.5}.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:22px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.wide{grid-column:1/-1}
+.choice{border:1px solid #333;background:#151515;color:#fff;border-radius:999px;padding:11px 14px;font-weight:850;cursor:pointer}.choice.active,.primary,.yes{background:var(--lime);border-color:var(--lime);color:#111}.selectRow{display:flex;gap:8px;flex-wrap:wrap}.cta{margin-top:22px;padding:14px 20px;border-radius:999px;border:1px solid var(--lime);font-weight:950;cursor:pointer}
+.setup{max-width:760px;margin:45px auto 80px}.setup h1{font-size:clamp(48px,7vw,78px);line-height:.94;letter-spacing:-.06em;margin:15px 0}.sub{color:var(--muted);margin-bottom:25px}label{display:block;font-size:13px;font-weight:850;margin:18px 0 8px}select{width:100%;background:#0b0b0b;color:white;border:1px solid #333;border-radius:12px;padding:12px;font-size:16px}.dateGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.hero{padding:42px 0 26px}.heroNum{font-size:clamp(95px,18vw,190px);font-weight:950;line-height:.8;letter-spacing:-.08em}.heroLabel{font-size:clamp(26px,4vw,44px);font-weight:950;margin-top:18px}.meta{display:flex;gap:28px;flex-wrap:wrap;margin-top:22px}.meta b{font-size:31px}.meta .lime{color:var(--lime)}.meta span{display:block;color:#777;font-size:9px;letter-spacing:.11em;margin-top:4px}
+.q{border-top:1px solid #292929;padding:14px 0;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}.q:first-child{border-top:0}.reward{font-size:11px;color:var(--lime);margin-top:4px}.yn{display:flex;gap:6px}.yn button{min-width:58px}.score{font-size:48px;font-weight:950}.progress{height:9px;background:#242424;border-radius:99px;overflow:hidden;margin:12px 0}.bar{height:100%;background:var(--lime)}
+.mission{font-size:27px;font-weight:950;line-height:1.15;margin:8px 0 16px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stat{border-top:1px solid #333;padding-top:12px}.stat b{font-size:26px}.stat span{display:block;color:#777;font-size:9px;margin-top:5px}.level{font-size:52px;font-weight:950}.badgeRow{display:flex;gap:8px;flex-wrap:wrap}.badge{border:1px solid #333;border-radius:14px;padding:11px 13px;color:#666;font-weight:900}.badge.on{background:var(--lime);border-color:var(--lime);color:#111}
+.runHero{text-align:center;padding:10px 0 18px}.runDist{font-size:clamp(78px,17vw,150px);font-weight:950;letter-spacing:-.07em;line-height:.85}.unit{font-size:18px;color:var(--muted);font-weight:900}.runTime{font-size:44px;font-weight:900;margin-top:20px;font-variant-numeric:tabular-nums}.runMetrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}.runMetric{background:#0b0b0b;border-radius:16px;padding:15px 10px;text-align:center}.runMetric b{font-size:24px}.runMetric span{display:block;color:#777;font-size:9px;margin-top:5px}.runActions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}.runStart{font-size:17px;padding:15px 25px}.danger{border-color:#555}.gps{font-size:11px;color:var(--muted);text-align:center;margin:12px 0}.laps{width:100%;border-collapse:collapse;margin-top:14px}.laps th,.laps td{text-align:right;padding:11px 5px;border-top:1px solid #292929;font-variant-numeric:tabular-nums}.laps th:first-child,.laps td:first-child{text-align:left}.laps th{font-size:9px;color:#777;letter-spacing:.08em}.laps td{font-size:13px}.voiceToggle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px}
+.lifegrid{display:grid;grid-template-columns:repeat(52,1fr);gap:2px;margin-top:16px}.wk{aspect-ratio:1;background:#222}.used{background:#666}.now{background:var(--lime)}.topBtn{position:fixed;right:18px;bottom:18px;display:none;border:0;background:var(--lime);color:#111;border-radius:999px;padding:12px 14px;font-weight:900}.topBtn.show{display:block}.footer{padding:35px 0;color:#555;font-size:10px;display:flex;justify-content:space-between}
+@media(max-width:720px){.wrap{padding:14px}.grid{grid-template-columns:1fr}.wide{grid-column:auto}.stats{grid-template-columns:1fr 1fr}.dateGrid{grid-template-columns:1fr}.q{grid-template-columns:1fr}.runMetrics{grid-template-columns:repeat(3,1fr)}.runMetric b{font-size:18px}.lifegrid{grid-template-columns:repeat(26,1fr)}}
 </style>
 </head>
-<body>
-<div id="top"></div>
-<div class="wrap">
-<div class="top"><div class="logo" onclick="goTop()">LIFE</div><div class="nav"><button onclick="goTo('checkin')">TODAY</button><button onclick="goTo('earned')">PROGRESS</button><button onclick="goTo('calendar')">LIFE</button></div></div>
+<body><div id="top"></div><div class="wrap">
+<div class="top"><div class="logo" onclick="goTop()">LIFE</div><div class="nav"><button onclick="goTo('today')">TODAY</button><button onclick="goTo('run')">RUN</button><button onclick="goTo('game')">LEVEL</button><button onclick="goTo('calendar')">LIFE</button></div></div>
 
-<section id="setup" class="setup">
-<div class="k">FIRST SETUP</div>
-<h1>좋은 하루가<br>삶을 바꿉니다.</h1>
-<div class="sub">매일 10초, 오늘의 습관을 기록하세요.</div>
-
-<div class="card">
-<label>생년월일</label>
-<div class="dateGrid">
-<select id="birthY"></select><select id="birthM"></select><select id="birthD"></select>
-</div>
-
-<label style="margin-top:18px">현재 체중</label>
-<div class="selectRow" id="weightTens"></div>
-<div class="selectRow" id="weightOnes" style="margin-top:8px"></div>
-<div style="margin-top:10px;font-size:22px;font-weight:900"><span id="weightVal">70</span> kg</div>
-
-<label style="margin-top:18px">평균 수면시간</label>
-<div class="selectRow" id="sleepChoices"></div>
-
-<label style="margin-top:18px">주당 운동시간</label>
-<div class="selectRow" id="exerciseChoices"></div>
-
-<label style="margin-top:18px">현재 건강상태</label>
-<div class="selectRow" id="healthChoices"></div>
-
-<label style="margin-top:18px">흡연 여부</label>
-<div class="selectRow" id="smokeChoices"></div>
-
-<button class="cta primary" onclick="createLife()">START MY LIFE →</button>
-<p class="muted" style="font-size:11px;margin-top:12px">LIFE DAY는 게임화된 동기부여 점수이며 실제 수명 증가량이나 의료적 기대수명을 의미하지 않습니다.</p>
-</div>
-</section>
+<section id="setup" class="setup"><div class="k">FIRST SETUP</div><h1>좋은 하루가<br>삶을 바꿉니다.</h1><div class="sub">매일 10초. 점수를 만들고, 미션을 깨고, 달리며 나를 성장시키세요.</div>
+<div class="card"><label>생년월일</label><div class="dateGrid"><select id="birthY"></select><select id="birthM"></select><select id="birthD"></select></div>
+<label>현재 체중</label><div id="weightTens" class="selectRow"></div><div id="weightOnes" class="selectRow" style="margin-top:8px"></div><div style="margin-top:10px;font-size:22px;font-weight:900"><span id="weightVal">70</span> kg</div>
+<label>평균 수면시간</label><div id="sleepChoices" class="selectRow"></div><label>주당 운동시간</label><div id="exerciseChoices" class="selectRow"></div><label>현재 건강상태</label><div id="healthChoices" class="selectRow"></div><label>흡연 여부</label><div id="smokeChoices" class="selectRow"></div>
+<button class="cta primary" onclick="createLife()">START MY LIFE →</button><p class="muted" style="font-size:11px">LIFE 점수와 Planning Life는 동기부여용 게임 지표이며 의료적 기대수명이 아닙니다.</p></div></section>
 
 <section id="dash" class="hidden">
-<div class="hero">
-<div class="k" id="dateLine"></div>
-<div class="heroNum" id="totalDays"></div>
-<div class="heroLabel">YOUR LIFE SCORE</div>
-<div class="meta">
-<div><div class="n" id="bank">+0</div><span>LIFE DAYS EARNED</span></div>
-<div><b id="baseDays"></b><span>BASE DAYS LEFT</span></div>
-<div><b id="planningAge"></b><span>PLANNING AGE*</span></div>
-<div><b id="streakHero"></b><span>DAY STREAK</span></div>
-</div>
-</div>
-
+<div class="hero" id="today"><div class="k" id="dateLine"></div><div class="heroNum" id="todayHero">0</div><div class="heroLabel">TODAY SCORE</div><div class="meta"><div><b class="lime" id="streakHero">0</b><span>DAY STREAK</span></div><div><b id="levelHero">LV.1</b><span>LIFE LEVEL</span></div><div><b id="bestHero">0</b><span>MONTH BEST</span></div><div><b id="runWeekHero">0 KM</b><span>RUN THIS WEEK</span></div></div></div>
 <div class="grid">
-<div class="card wide" id="checkin">
-<div class="k">TODAY · 10 SECOND CHECK-IN</div>
-<div id="questions"></div>
-<div style="border-top:1px solid #333;padding-top:18px">
-<div class="score" id="todayScore">0 YES</div>
-<p class="muted" id="todayEarn">선택 후 저장하세요.</p>
-<div class="selectRow"><button id="saveTodayBtn" class="choice primary" onclick="saveToday()">SAVE TODAY</button><button id="editTodayBtn" class="choice" onclick="editToday()" style="display:none">EDIT TODAY</button></div>
-</div>
-</div>
+<div class="card wide"><div class="k">TODAY'S MISSION · +10 BONUS</div><div class="mission" id="missionText"></div><button id="missionBtn" class="choice" onclick="toggleMission()">○ COMPLETE MISSION</button></div>
 
-<div class="card">
-<div class="k">THIS WEEK · ONE THING</div>
-<p class="muted">이번 주 가장 집중할 영역 하나를 선택하세요.</p>
-<div class="selectRow" id="focusChoices"></div>
-<div style="margin-top:14px"><button id="focusDoneBtn" class="choice" onclick="toggleFocusDone()">○ DID YOU DO IT?</button></div>
-</div>
+<div class="card wide" id="run"><div class="k">LIFE RUN · GPS</div><div class="runHero"><div class="runDist"><span id="runDistance">0.00</span><span class="unit"> KM</span></div><div class="runTime" id="runTime">00:00:00</div></div>
+<div class="runMetrics"><div class="runMetric"><b id="avgPace">--'--"</b><span>AVG PACE / KM</span></div><div class="runMetric"><b id="lastPace">--'--"</b><span>LAST KM PACE</span></div><div class="runMetric"><b id="runXp">+0</b><span>RUN XP</span></div></div>
+<div class="runActions"><button id="startRunBtn" class="choice primary runStart" onclick="startRun()">START RUN</button><button id="finishRunBtn" class="choice danger runStart hidden" onclick="finishRun()">FINISH RUN</button></div>
+<div id="gpsStatus" class="gps">START RUN을 누르면 위치 권한을 요청합니다. HTTPS와 실제 휴대폰에서 사용하세요.</div>
+<div class="voiceToggle"><span class="muted">1km마다 영문 음성 안내</span><button id="voiceBtn" class="choice active" onclick="toggleVoice()">VOICE ON</button></div>
+<div id="lapBox" class="hidden"><table class="laps"><thead><tr><th>KM</th><th>TOTAL</th><th>LAST KM</th><th>AVG</th></tr></thead><tbody id="lapRows"></tbody></table></div>
+<p class="muted" style="font-size:11px;margin-top:16px">웹 브라우저의 GPS는 화면 잠금·백그라운드 상태에서 중단되거나 정확도가 떨어질 수 있습니다. 안전한 장소에서 사용하고 주행 중 화면 조작은 피하세요.</p></div>
 
-<div class="card">
-<div class="k">HOW WAS TODAY?</div>
-<p class="muted">오늘 하루를 한 번만 선택하세요.</p>
-<div class="selectRow" id="moodChoices"></div>
-</div>
+<div class="card wide" id="checkin"><div class="k">TODAY · 10 SECOND CHECK-IN</div><div id="questions"></div><div style="border-top:1px solid #333;padding-top:18px"><div class="score" id="todayScore">0 / 100</div><div class="progress"><div class="bar" id="todayBar"></div></div><p class="muted" id="todayNote"></p><div class="selectRow"><button id="saveTodayBtn" class="choice primary" onclick="saveToday()">SAVE TODAY</button><button id="editTodayBtn" class="choice hidden" onclick="editToday()">EDIT TODAY</button></div></div></div>
+<div class="card"><div class="k">THIS WEEK · ONE THING</div><div id="focusChoices" class="selectRow"></div><button id="focusDoneBtn" class="choice" style="margin-top:14px" onclick="toggleFocusDone()">○ DID YOU DO IT?</button></div>
+<div class="card"><div class="k">HOW WAS TODAY?</div><div id="moodChoices" class="selectRow"></div></div>
 
-<div class="card wide" id="earned">
-<div class="k">LIFE EARNED</div>
-<div class="score" id="earnedBig">+0 DAYS</div>
-<p class="muted">YOU'VE EARNED BACK</p>
-<div class="stats">
-<div class="stat"><b id="earnedWeek">+0</b><span>THIS WEEK</span></div>
-<div class="stat"><b id="earnedMonth">+0</b><span>THIS MONTH</span></div>
-<div class="stat"><b id="earnedTotal">+0</b><span>ALL TIME</span></div>
-<div class="stat"><b id="earnedStreak">0</b><span>DAY STREAK</span></div>
-</div>
-<p class="muted" id="earnedMessage"></p>
-</div>
+<div class="card wide" id="game"><div class="k">YOUR PROGRESS</div><div class="level" id="levelBig">LEVEL 1</div><div class="progress"><div class="bar" id="levelBar"></div></div><p class="muted" id="xpText"></p><div class="stats"><div class="stat"><b id="avg7">0</b><span>7 DAY AVG</span></div><div class="stat"><b id="runTotal">0</b><span>TOTAL RUN KM</span></div><div class="stat"><b id="missionCount">0</b><span>MISSIONS</span></div><div class="stat"><b id="checkinCount">0</b><span>CHECK-INS</span></div></div><div class="k" style="margin-top:24px">BADGES</div><div id="badges" class="badgeRow"></div></div>
 
-<div class="card wide">
-<div class="k">30 DAY REVIEW</div>
-<div class="stats">
-<div class="stat"><b id="reviewCheckins">0</b><span>CHECK-IN DAYS</span></div>
-<div class="stat"><b id="reviewEarn">0</b><span>LIFE DAYS</span></div>
-<div class="stat"><b id="reviewExercise">0</b><span>EXERCISE DAYS</span></div>
-<div class="stat"><b id="reviewGood">0</b><span>GOOD DAYS</span></div>
-</div>
-<p class="muted" id="reviewInsight"></p>
-</div>
-
-<div class="card wide" id="calendar">
-<div class="k">LIFE CALENDAR</div>
-<div class="stats">
-<div class="stat"><b id="weeksLived">0</b><span>WEEKS LIVED</span></div>
-<div class="stat"><b id="weeksLeft">0</b><span>WEEKS LEFT</span></div>
-<div class="stat"><b id="lifeRemainPct">0%</b><span>OF LIFE REMAINS</span></div>
-<div class="stat"><b id="currentAge">0</b><span>AGE NOW</span></div>
-</div>
-<div class="progress"><div id="lifeProgressBar" class="bar"></div></div>
-<p id="miniLife" class="muted"></p>
-<button id="expandLifeBtn" class="choice" onclick="toggleLifeCalendar()">VIEW ALL WEEKS →</button>
-<div id="lifegrid" class="lifegrid" style="display:none"></div>
-</div>
-</div>
-</section>
-
-<button id="topBtn" class="topBtn" onclick="goTop()">↑ TOP</button>
-<div class="footer"><span>DON'T COUNT THE DAYS. MAKE THE DAYS COUNT.</span><span>*GAME / PLANNING METRIC</span></div>
-</div>
+<div class="card wide"><div class="k">RECENT RUNS</div><div id="runHistory" class="muted">아직 러닝 기록이 없습니다.</div></div>
+<div class="card wide" id="calendar"><div class="k">LIFE CALENDAR</div><div class="stats"><div class="stat"><b id="weeksLived">0</b><span>WEEKS LIVED</span></div><div class="stat"><b id="weeksLeft">0</b><span>WEEKS LEFT*</span></div><div class="stat"><b id="lifeRemainPct">0%</b><span>PLANNING LIFE REMAINS</span></div><div class="stat"><b id="currentAge">0</b><span>AGE NOW</span></div></div><div class="progress"><div id="lifeProgressBar" class="bar"></div></div><p id="miniLife" class="muted"></p><button id="expandLifeBtn" class="choice" onclick="toggleLifeCalendar()">VIEW ALL WEEKS →</button><div id="lifegrid" class="lifegrid hidden"></div></div>
+</div></section>
+<button id="topBtn" class="topBtn" onclick="goTop()">↑ TOP</button><div class="footer"><span>MAKE TODAY COUNT.</span><span>*GAME / PLANNING METRIC</span></div></div>
 
 <script>
-const KEY='life-v6';
-const Q=[
-['exercise','30분 이상 운동했나요?',1],
-['strength','근력운동을 했나요?',.5],
-['move','충분히 걷거나 움직였나요?',.5],
-['sleep','7시간 이상 잤나요?',.5],
-['food','건강한 식사를 했나요?',.5],
-['smokefree','오늘 담배를 피우지 않았나요?',1],
-['people','소중한 사람과 시간을 보냈나요?',.5],
-['growth','배우거나 성장하는 일을 했나요?',.25]
-];
-const FOCUS=['HEALTH','FAMILY','MONEY','WORK','LEARNING','REST'];
-const MOODS=['GREAT','GOOD','OK','BAD'];
-let S=JSON.parse(localStorage.getItem(KEY)||'null');
-let draft={},editingToday=false,lifeExpanded=false;
-let setupState={weight:70,sleep:7,exercise:60,health:2,smoke:0};
+const KEY='life-v8', OLD=['life-v7','life-v6'];
+const Q=[['exercise','30분 이상 운동했나요?',20],['strength','근력운동을 했나요?',10],['move','충분히 걷거나 움직였나요?',10],['sleep','7시간 이상 잤나요?',15],['food','건강한 식사를 했나요?',15],['smokefree','오늘 담배를 피우지 않았나요?',10],['people','소중한 사람과 시간을 보냈나요?',10],['growth','배우거나 성장하는 일을 했나요?',10]];
+const FOCUS=['HEALTH','FAMILY','MONEY','WORK','LEARNING','REST'], MOODS=['GREAT','GOOD','OK','BAD'];
+const MISSIONS=['30분 산책하기','잠들기 30분 전 휴대폰 내려놓기','소중한 사람에게 먼저 연락하기','20분 책 읽기','15분 주변 정리하기','평소보다 30분 일찍 잠자리에 들기','10분 햇빛 보며 걷기','미뤄둔 작은 일 하나 끝내기'];
+let raw=localStorage.getItem(KEY); if(!raw) for(const k of OLD){if(localStorage.getItem(k)){raw=localStorage.getItem(k);break}}
+let S=raw?JSON.parse(raw):null,draft={},editingToday=false,lifeExpanded=false,setupState={weight:70,sleep:7,exercise:60,health:2,smoke:0};
+let R={active:false,start:0,watch:null,timer:null,lastPos:null,meters:0,nextKm:1000,lastLapMs:0,laps:[],voice:true};
+const td=()=>new Date().toISOString().slice(0,10), save=()=>localStorage.setItem(KEY,JSON.stringify(S));
+function initSetup(){let y=new Date().getFullYear();birthY.innerHTML=Array.from({length:90},(_,i)=>`<option>${y-10-i}</option>`).join('');birthM.innerHTML=Array.from({length:12},(_,i)=>`<option value="${String(i+1).padStart(2,'0')}">${i+1}월</option>`).join('');birthD.innerHTML=Array.from({length:31},(_,i)=>`<option value="${String(i+1).padStart(2,'0')}">${i+1}일</option>`).join('');birthY.value='1976';birthM.value='02';birthD.value='16';renderSetupChoices()}
+function renderSetupChoices(){weightVal.textContent=setupState.weight;let t=Math.floor(setupState.weight/10)*10,o=setupState.weight%10;weightTens.innerHTML=[40,50,60,70,80,90,100,110,120].map(v=>`<button class="choice ${t===v?'active':''}" onclick="setWeightPart('tens',${v})">${v}</button>`).join('');weightOnes.innerHTML=[0,1,2,3,4,5,6,7,8,9].map(v=>`<button class="choice ${o===v?'active':''}" onclick="setWeightPart('ones',${v})">${v}</button>`).join('');sleepChoices.innerHTML=[5,6,7,8,9].map(v=>`<button class="choice ${setupState.sleep===v?'active':''}" onclick="setSetup('sleep',${v})">${v}${v===9?'+':''}시간</button>`).join('');exerciseChoices.innerHTML=[0,30,60,90,150,210].map(v=>`<button class="choice ${setupState.exercise===v?'active':''}" onclick="setSetup('exercise',${v})">${v}${v===210?'+':''}분</button>`).join('');healthChoices.innerHTML=[[2,'좋음'],[1,'보통'],[0,'좋지 않음']].map(x=>`<button class="choice ${setupState.health===x[0]?'active':''}" onclick="setSetup('health',${x[0]})">${x[1]}</button>`).join('');smokeChoices.innerHTML=[[0,'비흡연'],[1,'흡연']].map(x=>`<button class="choice ${setupState.smoke===x[0]?'active':''}" onclick="setSetup('smoke',${x[0]})">${x[1]}</button>`).join('')}
+function setSetup(k,v){setupState[k]=v;renderSetupChoices()} function setWeightPart(p,v){let t=Math.floor(setupState.weight/10)*10,o=setupState.weight%10;if(p==='tens')t=v;else o=v;setupState.weight=t+o;renderSetupChoices()}
+function createLife(){S={p:{birth:`${birthY.value}-${birthM.value}-${birthD.value}`,w:setupState.weight,s:setupState.sleep,e:setupState.exercise,h:setupState.health,sm:setupState.smoke},days:{},runs:[]};save();show()}
+function normalize(){S.days=S.days||{};S.runs=S.runs||[]}
+function score(d){return Q.reduce((n,q)=>n+(d&&d[q[0]]===true?q[2]:0),0)} function missionOf(){let n=[...td()].reduce((a,c)=>a+c.charCodeAt(0),0);return MISSIONS[n%MISSIONS.length]}
+function show(){normalize();setup.classList.add('hidden');dash.classList.remove('hidden');render()}
+function render(){normalize();let d=S.days[td()]||{},view=(d.saved&&!editingToday)?d:(Object.keys(draft).length?draft:d),sc=score(view),bonus=d.missionDone?10:0;dateLine.textContent=new Date().toDateString().toUpperCase();todayHero.textContent=Math.min(100,sc+bonus);streakHero.textContent=getStreak();levelHero.textContent='LV.'+getLevel().level;bestHero.textContent=monthBest();runWeekHero.textContent=weekRun().toFixed(1)+' KM';missionText.textContent=missionOf();missionBtn.textContent=d.missionDone?'✓ MISSION COMPLETE':'○ COMPLETE MISSION';missionBtn.classList.toggle('active',!!d.missionDone);
+questions.innerHTML=Q.map(q=>`<div class="q"><div><b>${q[1]}</b><div class="reward">YES = +${q[2]} SCORE</div></div><div class="yn"><button class="choice ${view[q[0]]===true?'yes':''}" onclick="answer('${q[0]}',true)">YES</button><button class="choice ${view[q[0]]===false?'yes':''}" onclick="answer('${q[0]}',false)">NO</button></div></div>`).join('');let ans=Q.filter(q=>view[q[0]]!==undefined).length;todayScore.textContent=sc+' / 100';todayBar.style.width=sc+'%';todayNote.textContent=d.saved&&!editingToday?`TODAY SAVED · ${sc}점 · 답변을 다시 눌러 수정할 수 있습니다.`:(editingToday?'수정 후 SAVE CHANGES를 눌러주세요.':`${ans}/8 선택`);saveTodayBtn.classList.toggle('hidden',d.saved&&!editingToday);saveTodayBtn.textContent=editingToday?'SAVE CHANGES':'SAVE TODAY';editTodayBtn.classList.toggle('hidden',!(d.saved&&!editingToday));renderFocus();renderMood();renderGame();renderRuns();drawLife()}
+function answer(k,v){let d=S.days[td()]||{};if(d.saved&&!editingToday){editingToday=true;draft={...d}}if(!Object.keys(draft).length)draft={...d};draft[k]=v;render()} function saveToday(){if(Q.filter(q=>draft[q[0]]!==undefined).length<Q.length)return alert('8개 항목을 모두 선택해주세요.');let prev=S.days[td()]||{};S.days[td()]={...prev,...draft,saved:true,savedAt:new Date().toISOString()};draft={};editingToday=false;save();render()} function editToday(){draft={...(S.days[td()]||{})};editingToday=true;render()}
+function toggleMission(){let d=S.days[td()]||{};d.missionDone=!d.missionDone;S.days[td()]=d;save();render()}
+function renderFocus(){let d=S.days[td()]||{};focusChoices.innerHTML=FOCUS.map(x=>`<button class="choice ${d.focus===x?'active':''}" onclick="setFocus('${x}')">${x}</button>`).join('');focusDoneBtn.textContent=d.focusDone?'✓ DONE':'○ DID YOU DO IT?';focusDoneBtn.classList.toggle('active',!!d.focusDone)} function setFocus(x){S.days[td()]=S.days[td()]||{};S.days[td()].focus=x;save();render()} function toggleFocusDone(){let d=S.days[td()]||{};if(!d.focus)return alert('먼저 집중 영역을 선택하세요.');d.focusDone=!d.focusDone;S.days[td()]=d;save();render()}
+function renderMood(){let d=S.days[td()]||{};moodChoices.innerHTML=MOODS.map(x=>`<button class="choice ${d.mood===x?'active':''}" onclick="setMood('${x}')">${x}</button>`).join('')} function setMood(x){S.days[td()]=S.days[td()]||{};S.days[td()].mood=x;save();render()}
+function getStreak(){let n=new Date(),z=0;for(let i=0;i<999;i++){let k=n.toISOString().slice(0,10);if(S.days[k]&&S.days[k].saved)z++;else if(i>0)break;n.setDate(n.getDate()-1)}return z}
+function runKm(){return S.runs.reduce((n,r)=>n+r.km,0)} function weekRun(){let cut=Date.now()-7*864e5;return S.runs.filter(r=>new Date(r.date).getTime()>=cut).reduce((n,r)=>n+r.km,0)}
+function getLevel(){let xp=Object.values(S.days).filter(d=>d.saved).reduce((n,d)=>n+score(d)+(d.missionDone?10:0),0)+Math.round(runKm()*20),level=Math.floor(xp/500)+1;return{xp,level,cur:xp%500}} function monthBest(){let p=td().slice(0,7),a=Object.entries(S.days).filter(([k,d])=>k.startsWith(p)&&d.saved).map(([k,d])=>score(d)+(d.missionDone?10:0));return a.length?Math.min(100,Math.max(...a)):0}
+function renderGame(){let a=Object.values(S.days).filter(d=>d.saved),g=getLevel(),last=Object.entries(S.days).sort().slice(-7).filter(x=>x[1].saved),avg=last.length?Math.round(last.reduce((n,x)=>n+score(x[1]),0)/last.length):0,m=a.filter(d=>d.missionDone).length;levelBig.textContent='LEVEL '+g.level;levelBar.style.width=(g.cur/5)+'%';xpText.textContent=`${g.cur} / 500 XP · 체크인, 미션, 러닝이 XP가 됩니다.`;avg7.textContent=avg;runTotal.textContent=runKm().toFixed(1);missionCount.textContent=m;checkinCount.textContent=a.length;let bs=[['FIRST STEP',a.length>=1],['3 DAY FIRE',getStreak()>=3],['7 DAY STREAK',getStreak()>=7],['FIRST RUN',S.runs.length>=1],['FIRST 5K',S.runs.some(r=>r.km>=5)],['10K RUNNER',S.runs.some(r=>r.km>=10)],['50 KM',runKm()>=50],['LEVEL 3',g.level>=3]];badges.innerHTML=bs.map(b=>`<div class="badge ${b[1]?'on':''}">${b[1]?'★':'○'} ${b[0]}</div>`).join('')}
+function renderRuns(){if(!S.runs.length){runHistory.textContent='아직 러닝 기록이 없습니다.';return}runHistory.innerHTML=S.runs.slice().reverse().slice(0,5).map(r=>`<div style="padding:12px 0;border-top:1px solid #292929"><b>${r.km.toFixed(2)} KM</b> · ${fmtTime(r.ms)} · ${fmtPace(r.ms/(r.km||1))}/KM · +${Math.round(r.km*20)} XP</div>`).join('')}
+function planningAge(){let a=82,p=S.p;if(p.sm)a-=4;if(p.e>=150)a+=1;if(p.s>=7&&p.s<=9)a+=.5;if(p.h===2)a+=.5;return Math.max(70,Math.min(90,a))}
+function drawLife(){let b=new Date(S.p.birth+'T00:00:00'),used=Math.floor((new Date()-b)/(864e5*7)),tot=Math.round(planningAge()*52),left=Math.max(0,tot-used);weeksLived.textContent=used.toLocaleString();weeksLeft.textContent=left.toLocaleString();lifeRemainPct.textContent=Math.max(0,left/tot*100).toFixed(0)+'%';currentAge.textContent=((new Date()-b)/(365.2425*864e5)).toFixed(1);lifeProgressBar.style.width=Math.min(100,used/tot*100)+'%';miniLife.textContent='YOU ARE HERE · YEAR '+Math.floor(used/52)+' · WEEK '+(used%52+1);lifegrid.innerHTML='';for(let i=0;i<tot;i++){let q=document.createElement('i');q.className='wk '+(i<used?'used':i===used?'now':'');lifegrid.appendChild(q)}lifegrid.classList.toggle('hidden',!lifeExpanded);expandLifeBtn.textContent=lifeExpanded?'HIDE FULL CALENDAR ↑':'VIEW ALL WEEKS →'} function toggleLifeCalendar(){lifeExpanded=!lifeExpanded;drawLife()}
 
-const td=()=>new Date().toISOString().slice(0,10);
-const save=()=>localStorage.setItem(KEY,JSON.stringify(S));
-
-function initSetup(){
- let y=new Date().getFullYear();
- birthY.innerHTML=Array.from({length:90},(_,i)=>`<option value="${y-10-i}">${y-10-i}년</option>`).join('');
- birthM.innerHTML=Array.from({length:12},(_,i)=>`<option value="${String(i+1).padStart(2,'0')}">${i+1}월</option>`).join('');
- birthD.innerHTML=Array.from({length:31},(_,i)=>`<option value="${String(i+1).padStart(2,'0')}">${i+1}일</option>`).join('');
- birthY.value='1976';birthM.value='02';birthD.value='16';
- renderSetupChoices();
-}
-function renderSetupChoices(){
- weightVal.textContent=setupState.weight.toFixed(0);
- let tens=Math.floor(setupState.weight/10)*10,ones=setupState.weight%10;
- weightTens.innerHTML=[40,50,60,70,80,90,100,110,120].map(v=>`<button class="choice ${tens===v?'active':''}" onclick="setWeightPart('tens',${v})">${v}</button>`).join('');
- weightOnes.innerHTML=[0,1,2,3,4,5,6,7,8,9].map(v=>`<button class="choice ${ones===v?'active':''}" onclick="setWeightPart('ones',${v})">${v}</button>`).join('');
- sleepChoices.innerHTML=[5,6,7,8,9].map(v=>`<button class="choice ${setupState.sleep===v?'active':''}" onclick="setSetup('sleep',${v})">${v}${v===9?'+':''}시간</button>`).join('');
- exerciseChoices.innerHTML=[0,30,60,90,150,210].map(v=>`<button class="choice ${setupState.exercise===v?'active':''}" onclick="setSetup('exercise',${v})">${v}${v===210?'+':''}분</button>`).join('');
- healthChoices.innerHTML=[[2,'좋음'],[1,'보통'],[0,'좋지 않음']].map(x=>`<button class="choice ${setupState.health===x[0]?'active':''}" onclick="setSetup('health',${x[0]})">${x[1]}</button>`).join('');
- smokeChoices.innerHTML=[[0,'비흡연'],[1,'흡연']].map(x=>`<button class="choice ${setupState.smoke===x[0]?'active':''}" onclick="setSetup('smoke',${x[0]})">${x[1]}</button>`).join('');
-}
-function setSetup(k,v){setupState[k]=v;renderSetupChoices()}
-function setWeightPart(part,v){
- let tens=Math.floor(setupState.weight/10)*10,ones=setupState.weight%10;
- if(part==='tens')tens=v;else ones=v;
- setupState.weight=tens+ones;renderSetupChoices();
-}
-function createLife(){
- const birth=`${birthY.value}-${birthM.value}-${birthD.value}`;
- S={p:{birth,w:setupState.weight,s:setupState.sleep,e:setupState.exercise,h:setupState.health,sm:setupState.smoke},days:{}};
- save();show();
-}
-function planningAge(){
- let a=82,p=S.p;
- if(p.sm)a-=4;if(p.e>=150)a+=1;if(p.s>=7&&p.s<=9)a+=.5;if(p.h===2)a+=.5;
- return Math.max(70,Math.min(90,a));
-}
-function earned(d){return Q.reduce((n,q)=>n+(d&&d[q[0]]===true?q[2]:0),0)}
-function baseDays(){
- let b=new Date(S.p.birth+'T00:00:00'),e=new Date(b);e.setFullYear(b.getFullYear()+planningAge());
- return Math.max(0,Math.round((e-new Date())/86400000));
-}
-function totalEarn(){return Object.values(S.days).reduce((n,d)=>n+(d.saved?earned(d):0),0)}
-function show(){setup.classList.add('hidden');dash.classList.remove('hidden');render()}
-function render(){
- const now=new Date(),saved=S.days[td()]||{},view=(saved.saved&&!editingToday)?saved:(Object.keys(draft).length?draft:saved);
- dateLine.textContent=now.toDateString().toUpperCase();
- const e=totalEarn(),b=baseDays();
- totalDays.textContent=Math.round(b+e).toLocaleString();
- baseDays.textContent=b.toLocaleString();
- bank.textContent='+'+e.toFixed(2);
- planningAge.textContent=planningAge().toFixed(1)+' YEARS';
- streakHero.textContent=getStreak();
-
- questions.innerHTML=Q.map(q=>`<div class="q"><div><b>${q[1]}</b><div class="reward">YES = +${q[2]} LIFE DAY</div></div><div class="yn"><button class="choice ${view[q[0]]===true?'yes':''}" onclick="answer('${q[0]}',true)">YES</button><button class="choice ${view[q[0]]===false?'yes':''}" onclick="answer('${q[0]}',false)">NO</button></div></div>`).join('');
- let answered=Q.filter(q=>view[q[0]]!==undefined).length,yes=Q.filter(q=>view[q[0]]===true).length;
- todayScore.textContent=yes+' YES · '+answered+'/'+Q.length+' ANSWERED';
- todayEarn.textContent=saved.saved&&!editingToday
- ? 'TODAY SAVED · +'+earned(saved).toFixed(2)+' LIFE DAYS · 답변을 다시 누르면 바로 수정할 수 있습니다.'
- : (editingToday?'수정 후 SAVE CHANGES를 눌러주세요.':'선택 후 SAVE TODAY를 눌러 확정하세요.');
- saveTodayBtn.style.display=saved.saved&&!editingToday?'none':'inline-block';
- saveTodayBtn.textContent=editingToday?'SAVE CHANGES':'SAVE TODAY';
- editTodayBtn.style.display=saved.saved&&!editingToday?'inline-block':'none';
-
- renderFocus();renderMood();renderEarned();renderReview();drawLife();
-}
-function answer(k,v){
- let saved=S.days[td()]||{};
- if(saved.saved&&!editingToday){
-   editingToday=true;
-   draft={...saved};
- }
- if(!Object.keys(draft).length)draft={...saved};
- draft[k]=v;
- render();
-}
-function saveToday(){
- let answered=Q.filter(q=>draft[q[0]]!==undefined).length;
- if(answered<Q.length)return alert('8개 항목을 모두 선택해주세요.');
- let prev=S.days[td()]||{};
- S.days[td()]={...prev,...draft,saved:true,savedAt:new Date().toISOString()};
- draft={};editingToday=false;save();render();
- alert((editingToday?'CHANGES SAVED':'TODAY SAVED')+'\\n+'+earned(S.days[td()]).toFixed(2)+' LIFE DAYS');
-}
-function editToday(){draft={...(S.days[td()]||{})};editingToday=true;render()}
-function renderFocus(){
- let d=S.days[td()]||{};
- focusChoices.innerHTML=FOCUS.map(x=>`<button class="choice ${d.focus===x?'active':''}" onclick="setFocus('${x}')">${x}</button>`).join('');
- focusDoneBtn.textContent=d.focusDone?'✓ DONE':'○ DID YOU DO IT?';
-}
-function setFocus(x){S.days[td()]=S.days[td()]||{};S.days[td()].focus=x;save();render()}
-function toggleFocusDone(){
- let d=S.days[td()]||{};if(!d.focus)return alert('먼저 집중 영역을 선택하세요.');
- d.focusDone=!d.focusDone;S.days[td()]=d;save();render();
-}
-function renderMood(){
- let d=S.days[td()]||{};
- moodChoices.innerHTML=MOODS.map(x=>`<button class="choice ${d.mood===x?'active':''}" onclick="setMood('${x}')">${x}</button>`).join('');
-}
-function setMood(x){S.days[td()]=S.days[td()]||{};S.days[td()].mood=x;save();render()}
-function periodEarn(n){
- let now=new Date(),sum=0;
- for(let i=0;i<n;i++){let d=new Date(now);d.setDate(now.getDate()-i);let v=S.days[d.toISOString().slice(0,10)];if(v&&v.saved)sum+=earned(v)}
- return sum;
-}
-function getStreak(){
- let n=new Date(),z=0;
- for(let i=0;i<999;i++){let k=n.toISOString().slice(0,10);if(S.days[k]&&S.days[k].saved)z++;else if(i>0)break;n.setDate(n.getDate()-1)}
- return z;
-}
-function formatLife(d){if(d>=365)return '+'+(d/365).toFixed(1)+' YEARS';if(d>=60)return '+'+(d/30.44).toFixed(1)+' MONTHS';return '+'+d.toFixed(2)+' DAYS'}
-function renderEarned(){
- let t=totalEarn(),w=periodEarn(7),m=periodEarn(30),s=getStreak();
- earnedBig.textContent=formatLife(t);earnedWeek.textContent='+'+w.toFixed(2);earnedMonth.textContent='+'+m.toFixed(2);earnedTotal.textContent='+'+t.toFixed(2);earnedStreak.textContent=s;
- earnedMessage.textContent=t<30?'GOOD DAYS ARE STARTING TO ADD UP.':t<365?'YOU ARE BUILDING MONTHS OF BETTER DAYS.':'YOU HAVE EARNED MORE THAN A YEAR IN YOUR LIFE BANK.';
-}
-function renderReview(){
- let now=new Date(),c=0,e=0,x=0,g=0;
- for(let i=0;i<30;i++){let d=new Date(now);d.setDate(now.getDate()-i);let v=S.days[d.toISOString().slice(0,10)];if(v&&v.saved){c++;e+=earned(v);if(v.exercise)x++;if(v.mood==='GREAT'||v.mood==='GOOD')g++;}}
- reviewCheckins.textContent=c;reviewEarn.textContent=e.toFixed(1);reviewExercise.textContent=x;reviewGood.textContent=g;
- reviewInsight.textContent=c<7?'7일 이상 기록하면 나만의 패턴을 보여줍니다.':`지난 30일 중 ${c}일 기록했고, 운동한 날은 ${x}일입니다. LIFE DAY는 ${e.toFixed(1)}일 적립했습니다.`;
-}
-function drawLife(){
- let b=new Date(S.p.birth+'T00:00:00'),used=Math.floor((new Date()-b)/(86400000*7)),tot=Math.round(planningAge()*52),left=Math.max(0,tot-used);
- weeksLived.textContent=used.toLocaleString();weeksLeft.textContent=left.toLocaleString();lifeRemainPct.textContent=Math.max(0,left/tot*100).toFixed(0)+'%';currentAge.textContent=((new Date()-b)/(365.2425*86400000)).toFixed(1);
- lifeProgressBar.style.width=Math.min(100,used/tot*100)+'%';miniLife.textContent='YOU ARE HERE · YEAR '+Math.floor(used/52)+' · WEEK '+(used%52+1);
- lifegrid.innerHTML='';
- for(let i=0;i<tot;i++){let q=document.createElement('i');q.className='wk '+(i<used?'used':i===used?'now':'');lifegrid.appendChild(q)}
- lifegrid.style.display=lifeExpanded?'grid':'none';expandLifeBtn.textContent=lifeExpanded?'HIDE FULL CALENDAR ↑':'VIEW ALL WEEKS →';
-}
-function toggleLifeCalendar(){lifeExpanded=!lifeExpanded;drawLife()}
-function goTop(){window.scrollTo({top:0,behavior:'smooth'})}
-function goTo(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'})}
-window.addEventListener('scroll',()=>topBtn.classList.toggle('show',window.scrollY>500));
-
-initSetup();
-if(S)show();
-</script>
-</body>
-</html>
+function hav(a,b){const R=6371000,rad=x=>x*Math.PI/180,dLat=rad(b.latitude-a.latitude),dLon=rad(b.longitude-a.longitude),x=Math.sin(dLat/2)**2+Math.cos(rad(a.latitude))*Math.cos(rad(b.latitude))*Math.sin(dLon/2)**2;return 2*R*Math.atan2(Math.sqrt(x),Math.sqrt(1-x))}
+function startRun(){if(R.active)return;if(!navigator.geolocation)return alert('이 브라우저는 GPS 위치 기능을 지원하지 않습니다.');R={...R,active:true,start:Date.now(),lastPos:null,meters:0,nextKm:1000,lastLapMs:0,laps:[]};startRunBtn.classList.add('hidden');finishRunBtn.classList.remove('hidden');gpsStatus.textContent='GPS 연결 중… 야외에서 위치 정확도가 안정될 때까지 잠시 기다려주세요.';lapRows.innerHTML='';lapBox.classList.add('hidden');R.timer=setInterval(updateRunUI,500);R.watch=navigator.geolocation.watchPosition(onPos,onGpsError,{enableHighAccuracy:true,maximumAge:1000,timeout:15000});speak('Run started.')}
+function onPos(p){if(!R.active)return;let c=p.coords;if(c.accuracy>50){gpsStatus.textContent=`GPS 정확도 낮음 · ±${Math.round(c.accuracy)}m`;return}if(R.lastPos){let d=hav(R.lastPos,c);if(d>=1&&d<100){R.meters+=d;checkLaps()}}R.lastPos={latitude:c.latitude,longitude:c.longitude};gpsStatus.textContent=`GPS ACTIVE · accuracy ±${Math.round(c.accuracy)}m`;updateRunUI()}
+function onGpsError(e){gpsStatus.textContent='GPS 오류: '+(e.code===1?'위치 권한을 허용해주세요.':e.message)}
+function checkLaps(){while(R.meters>=R.nextKm){let elapsed=Date.now()-R.start,lapMs=elapsed-R.lastLapMs,km=R.nextKm/1000,avg=elapsed/km;R.laps.push({km,elapsed,lapMs,avg});R.lastLapMs=elapsed;R.nextKm+=1000;renderLaps();speakLap(km,elapsed,lapMs,avg)}}
+function updateRunUI(){if(!R.active)return;let ms=Date.now()-R.start,km=R.meters/1000;runDistance.textContent=km.toFixed(2);runTime.textContent=fmtTime(ms);avgPace.textContent=km>.05?fmtPace(ms/km):"--'--\"";lastPace.textContent=R.laps.length?fmtPace(R.laps[R.laps.length-1].lapMs):"--'--\"";runXp.textContent='+'+Math.round(km*20)}
+function renderLaps(){lapBox.classList.toggle('hidden',!R.laps.length);lapRows.innerHTML=R.laps.map(l=>`<tr><td>${l.km}</td><td>${fmtTime(l.elapsed)}</td><td>${fmtPace(l.lapMs)}</td><td>${fmtPace(l.avg)}</td></tr>`).join('')}
+function finishRun(){if(!R.active)return;let ms=Date.now()-R.start,km=R.meters/1000;navigator.geolocation.clearWatch(R.watch);clearInterval(R.timer);R.active=false;startRunBtn.classList.remove('hidden');finishRunBtn.classList.add('hidden');if(km<.02){gpsStatus.textContent='러닝이 종료되었습니다. 이동거리가 너무 짧아 저장하지 않았습니다.';speak('Run finished.');return}S.runs.push({date:new Date().toISOString(),km,ms,laps:R.laps});let d=S.days[td()]||{};d.exercise=true;S.days[td()]=d;save();gpsStatus.textContent=`SAVED · ${km.toFixed(2)} KM · ${fmtTime(ms)} · AVG ${fmtPace(ms/km)}/KM`;speak(`Run finished. Distance ${km.toFixed(2)} kilometers. Average pace ${paceWords(ms/km)} per kilometer.`);render()}
+function fmtTime(ms){let s=Math.max(0,Math.floor(ms/1000)),h=Math.floor(s/3600),m=Math.floor((s%3600)/60),x=s%60;return [h,m,x].map(v=>String(v).padStart(2,'0')).join(':')} function fmtPace(ms){let s=Math.max(0,Math.round(ms/1000)),m=Math.floor(s/60),x=s%60;return `${m}'${String(x).padStart(2,'0')}"`}
+function paceWords(ms){let s=Math.round(ms/1000),m=Math.floor(s/60),x=s%60;return `${m} minutes ${x} seconds`}
+function speakLap(km,total,lap,avg){speak(`${km} kilometer${km>1?'s':''}. Total time ${timeWords(total)}. Last kilometer ${paceWords(lap)}. Average pace ${paceWords(avg)} per kilometer.`)}
+function timeWords(ms){let s=Math.round(ms/1000),h=Math.floor(s/3600),m=Math.floor((s%3600)/60),x=s%60;return `${h? h+' hours ':''}${m} minutes ${x} seconds`}
+function speak(t){if(!R.voice||!('speechSynthesis'in window))return;speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.95;speechSynthesis.speak(u)}
+function toggleVoice(){R.voice=!R.voice;voiceBtn.textContent=R.voice?'VOICE ON':'VOICE OFF';voiceBtn.classList.toggle('active',R.voice);if(R.voice)speak('Voice guidance on.')}
+function goTop(){window.scrollTo({top:0,behavior:'smooth'})}function goTo(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'})}window.addEventListener('scroll',()=>topBtn.classList.toggle('show',window.scrollY>500));window.addEventListener('beforeunload',e=>{if(R.active){e.preventDefault();e.returnValue=''}});initSetup();if(S){normalize();save();show()}
+</script></body></html>
