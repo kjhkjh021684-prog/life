@@ -6,7 +6,7 @@
 <style>
 *{box-sizing:border-box} :root{--bg:#070707;--card:#111;--line:#292929;--fg:#f6f6ef;--muted:#85857d;--lime:#d9ff43}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,Arial,sans-serif}
-.wrap{max-width:1080px;margin:auto;padding:24px}.top{display:flex;justify-content:space-between;font-size:11px;font-weight:900;letter-spacing:.15em}
+.wrap{max-width:1080px;margin:auto;padding:24px}.top{display:flex;justify-content:space-between;font-size:11px;font-weight:900;letter-spacing:.15em}.top span:first-child{cursor:pointer}.miniNav{display:flex;gap:14px}.miniNav button{background:none;border:0;padding:0;color:#8a8a83;font-size:10px;letter-spacing:.12em}.topBtn{position:fixed;right:20px;bottom:20px;z-index:30;display:none;background:#d8ff43;color:#111;border-color:#d8ff43}.topBtn.show{display:block}
 .hidden{display:none}.setup{max-width:680px;margin:70px auto}.setup h1{font-size:clamp(58px,9vw,105px);line-height:.85;letter-spacing:-.07em;margin:20px 0}
 .muted{color:var(--muted);line-height:1.6}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.wide{grid-column:1/-1}
 .card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:23px}.k{font-size:10px;letter-spacing:.15em;color:var(--muted);font-weight:900;margin-bottom:16px}
@@ -21,7 +21,7 @@ button{border:1px solid #333;background:#171717;color:#fff;padding:11px 14px;bor
 .log p{border-top:1px solid #252525;padding-top:10px}.foot{padding:40px 0;color:#555;font-size:10px;display:flex;justify-content:space-between}
 @media(max-width:700px){.grid{grid-template-columns:1fr}.wide{grid-column:auto}.stats{grid-template-columns:1fr 1fr}.lifegrid{grid-template-columns:repeat(26,1fr)}.q{grid-template-columns:1fr}.wrap{padding:15px}}
 </style></head>
-<body><div class="wrap"><div class="top"><span>LIFE</span><span>EARN YOUR DAYS · DAILY LIFE CHECK-IN</span></div>
+<body><div id="pageTop"></div><div class="wrap"><div class="top"><span onclick="goTop()">LIFE</span><div class="miniNav"><button onclick="goTo('checkinCard')">TODAY</button><button onclick="goTo('lifeEarnedCard')">PROGRESS</button><button onclick="goTo('lifeCalendarCard')">LIFE</button></div></div>
 
 <section id="setup" class="setup">
 <div class="k">FIRST SETUP</div><h1>좋은 하루를 살면<br>LIFE DAY를 번다.</h1>
@@ -38,15 +38,24 @@ button{border:1px solid #333;background:#171717;color:#fff;padding:11px 14px;bor
 <div class="bank"><div><div class="n" id="bank">+0</div><span>LIFE DAYS EARNED</span></div><div><b id="baseDays"></b><span>BASE DAYS LEFT</span></div><div><b id="planningAge"></b><span>PLANNING AGE*</span></div></div></div>
 
 <div class="grid">
-<div class="card wide"><div class="k">TODAY · 10 SECOND CHECK-IN</div><div id="questions"></div>
-<div style="border-top:1px solid #333;padding-top:18px;margin-top:8px"><span class="score" id="todayScore">0 / 8</span><p class="muted" id="todayEarn">오늘 +0 LIFE DAYS</p></div></div>
+<div class="card wide" id="checkinCard"><div class="k">TODAY · 10 SECOND CHECK-IN</div><div id="questions"></div>
+<div style="border-top:1px solid #333;padding-top:18px;margin-top:8px">
+<span class="score" id="todayScore">0 YES</span><p class="muted" id="todayEarn">선택 후 오늘 기록을 저장하세요.</p>
+<div class="checks"><button class="primary" id="saveTodayBtn" onclick="saveToday()">SAVE TODAY</button><button id="editTodayBtn" onclick="editToday()" style="display:none">EDIT TODAY</button></div>
+</div></div>
 
 <div class="card"><div class="k">LIFE BANK</div><div class="score" id="bank2">+0</div><p>이번 주 <b id="weekEarn"></b><br>이번 달 <b id="monthEarn"></b><br>전체 <b id="allEarn"></b></p><div class="progress"><div class="bar" id="weekBar"></div></div><p class="muted">좋은 행동을 체크할 때 LIFE DAY가 쌓입니다.</p></div>
 
 <div class="card"><div class="k">STREAK</div><div class="score">🔥 <span id="streak">0</span></div><p class="muted">연속 체크인 일수</p><div class="stats"><div class="stat"><b id="checkins">0</b><span>CHECK-INS</span></div><div class="stat"><b id="memCount">0</b><span>MEMORIES</span></div></div></div>
 
-<div class="card"><div class="k">ONE THING</div><input id="oneThing" placeholder="이번 주 가장 중요한 한 가지"><button onclick="saveOne()">SET THIS WEEK</button><button id="oneDone" onclick="toggleOne()">○ DONE</button></div>
-<div class="card"><div class="k">TODAY'S MEMORY</div><textarea id="memory" placeholder="오늘 기억하고 싶은 한 가지는?"></textarea><button onclick="saveMemory()">SAVE MEMORY</button></div>
+<div class="card"><div class="k">THIS WEEK · ONE THING</div>
+<p class="muted">이번 주 가장 집중할 영역 하나만 고르세요.</p>
+<div class="checks" id="focusChoices"></div>
+<div style="margin-top:14px"><button id="focusDoneBtn" onclick="toggleFocusDone()">○ DID YOU DO IT?</button></div></div>
+
+<div class="card"><div class="k">HOW WAS TODAY?</div>
+<p class="muted">오늘 하루를 한 번만 선택하세요.</p>
+<div class="checks" id="moodChoices"></div></div>
 
 <div class="card wide"><div class="k">THIS YEAR</div><div class="score" id="yearPct"></div><div class="progress"><div class="bar" id="yearBar"></div></div><span class="muted" id="yearRemain"></span></div>
 
@@ -57,14 +66,35 @@ button{border:1px solid #333;background:#171717;color:#fff;padding:11px 14px;bor
 <div class="stat"><b id="reviewExercise">0</b><span>EXERCISE DAYS</span></div>
 <div class="stat"><b id="reviewGood">0</b><span>GOOD DAYS</span></div>
 </div><p class="muted" id="reviewInsight">7일 이상 기록하면 나만의 패턴을 보여줍니다.</p></div>
-<div class="card wide"><div class="k">LIFE CALENDAR · EACH SQUARE = ONE WEEK</div><div class="lifegrid" id="lifegrid"></div></div>
+<div class="card wide" id="lifeCalendarCard"><div class="k">LIFE CALENDAR</div>
+<div class="stats">
+<div class="stat"><b id="weeksLived">0</b><span>WEEKS LIVED</span></div>
+<div class="stat"><b id="weeksLeft">0</b><span>WEEKS LEFT</span></div>
+<div class="stat"><b id="lifeRemainPct">0%</b><span>OF LIFE REMAINS</span></div>
+<div class="stat"><b id="currentAge">0</b><span>AGE NOW</span></div>
+</div>
+<div class="progress"><div class="bar" id="lifeProgressBar"></div></div>
+<div id="miniLife" class="muted" style="margin:10px 0 16px"></div>
+<button id="expandLifeBtn" onclick="toggleLifeCalendar()">VIEW ALL WEEKS →</button>
+<div class="lifegrid" id="lifegrid" style="display:none;margin-top:18px"></div></div>
 
-<div class="card wide"><div class="k">RECENT LIFE LOG</div><div class="log" id="log"></div></div>
+<div class="card wide" id="lifeEarnedCard"><div class="k">LIFE EARNED</div>
+<div class="score" id="earnedBig">+0 DAYS</div><p class="muted">YOU'VE EARNED BACK</p>
+<div class="stats">
+<div class="stat"><b id="earnedWeek">+0</b><span>THIS WEEK</span></div>
+<div class="stat"><b id="earnedMonth">+0</b><span>THIS MONTH</span></div>
+<div class="stat"><b id="earnedTotal">+0</b><span>ALL TIME</span></div>
+<div class="stat"><b id="earnedStreak">0</b><span>DAY STREAK</span></div>
+</div>
+<p class="muted" id="earnedMessage"></p></div>
 </div></section>
 <div class="foot"><span>DON'T COUNT THE DAYS. MAKE THE DAYS COUNT.</span><span>*GAME / PLANNING METRIC — NOT MEDICAL ADVICE</span></div></div>
 
 <script>
 const KEY='life-v3'; let S=JSON.parse(localStorage.getItem(KEY)||'null');
+const FOCUS=['HEALTH','FAMILY','MONEY','WORK','LEARNING','REST'];
+const MOODS=['GREAT','GOOD','OK','BAD'];
+let draft={}; let editingToday=false; let lifeExpanded=false;
 const qs=[
 ['exercise','30분 이상 운동했나요?',1],
 ['strength','근력운동을 했나요?',.5],
@@ -80,36 +110,84 @@ function createLife(){if(!birth.value)return alert('생년월일을 입력해주
 function pAge(){let a=82,p=S.p;if(p.sm)a-=4;if(p.e>=150)a+=1;if(p.s>=7&&p.s<=9)a+=.5;if(p.h==2)a+=.5;return Math.max(70,Math.min(90,a))}
 function base(){let b=new Date(S.p.birth+'T00:00:00'),e=new Date(b),a=pAge();e.setFullYear(b.getFullYear()+a);return Math.max(0,Math.round((e-new Date())/86400000))}
 function earned(d){return qs.reduce((n,q)=>n+(d&&d[q[0]]===true?q[2]:0),0)}
-function totalEarn(){return Object.values(S.days).reduce((n,d)=>n+earned(d),0)}
+function totalEarn(){return Object.values(S.days).reduce((n,d)=>n+(d.saved?earned(d):0),0)}
 function show(){setup.classList.add('hidden');dash.classList.remove('hidden');render()}
 function render(){
  let now=new Date(), d=S.days[td()]||{}; dateLine.textContent=now.toDateString().toUpperCase(); let e=totalEarn(),b=base();
  totalDays.textContent=Math.round(b+e).toLocaleString();baseDays.textContent=b.toLocaleString();bank.textContent=bank2.textContent='+'+e.toFixed(2);planningAge.textContent=pAge().toFixed(1)+' YEARS';
- questions.innerHTML=qs.map(q=>`<div class="q"><div><b>${q[1]}</b><div class="reward">YES = +${q[2]} LIFE DAY</div></div><div class="yn"><button class="${d[q[0]]===true?'yes':''}" onclick="answer('${q[0]}',true)">YES</button><button class="${d[q[0]]===false?'yes':''}" onclick="answer('${q[0]}',false)">NO</button></div></div>`).join('');
- let answered=qs.filter(q=>d[q[0]]!==undefined).length, yes=qs.filter(q=>d[q[0]]===true).length;todayScore.textContent=yes+' / '+qs.length;todayEarn.textContent='오늘 +'+earned(d).toFixed(2)+' LIFE DAYS · '+answered+'/'+qs.length+' answered';
+ let saved=S.days[td()]||{}, view=(saved.saved&&!editingToday)?saved:(Object.keys(draft).length?draft:saved);
+ questions.innerHTML=qs.map(q=>`<div class="q"><div><b>${q[1]}</b><div class="reward">YES = +${q[2]} LIFE DAY</div></div><div class="yn"><button class="${view[q[0]]===true?'yes':''}" onclick="answer('${q[0]}',true)">YES</button><button class="${view[q[0]]===false?'yes':''}" onclick="answer('${q[0]}',false)">NO</button></div></div>`).join('');
+ let answered=qs.filter(q=>view[q[0]]!==undefined).length, yes=qs.filter(q=>view[q[0]]===true).length;
+ todayScore.textContent=yes+' YES · '+answered+'/'+qs.length+' ANSWERED';
+ todayEarn.textContent=saved.saved&&!editingToday?'TODAY SAVED · +'+earned(saved).toFixed(2)+' LIFE DAYS':'선택 후 SAVE TODAY를 눌러 확정하세요.';
+ saveTodayBtn.style.display=saved.saved&&!editingToday?'none':'inline-block';editTodayBtn.style.display=saved.saved&&!editingToday?'inline-block':'none';
  weekEarn.textContent='+'+periodEarn(7).toFixed(2);monthEarn.textContent='+'+periodEarn(30).toFixed(2);allEarn.textContent='+'+e.toFixed(2);weekBar.style.width=Math.min(100,periodEarn(7)/20*100)+'%';
- streak.textContent=getStreak();checkins.textContent=Object.keys(S.days).length;memCount.textContent=S.mem.length;oneThing.value=S.one||'';oneDone.textContent=S.oneDone?'✓ DONE':'○ DONE';
+ streak.textContent=getStreak();checkins.textContent=Object.values(S.days).filter(x=>x.saved).length;memCount.textContent=Object.values(S.days).filter(x=>x.mood).length;
+ renderFocus();renderMood();renderLifeEarned();
  let y0=new Date(now.getFullYear(),0,1),y1=new Date(now.getFullYear()+1,0,1),p=(now-y0)/(y1-y0)*100;yearPct.textContent=p.toFixed(1)+'%';yearBar.style.width=p+'%';yearRemain.textContent=Math.ceil((y1-now)/86400000)+' days left this year';
- drawReview();drawLife();drawLog()
+ drawReview();drawLife();renderLifeEarned()
 }
-function answer(k,v){S.days[td()]=S.days[td()]||{};S.days[td()][k]=v;save();render()}
-function periodEarn(n){let now=new Date(),sum=0;for(let i=0;i<n;i++){let d=new Date(now);d.setDate(now.getDate()-i);sum+=earned(S.days[d.toISOString().slice(0,10)])}return sum}
-function getStreak(){let n=new Date(),z=0;for(let i=0;i<999;i++){let k=n.toISOString().slice(0,10);if(S.days[k]&&Object.keys(S.days[k]).length)z++;else if(i>0)break;n.setDate(n.getDate()-1)}return z}
-function saveOne(){S.one=oneThing.value;S.oneDone=false;save();render()} function toggleOne(){S.oneDone=!S.oneDone;save();render()}
-function saveMemory(){if(!memory.value.trim())return;S.mem.unshift({date:td(),text:memory.value.trim()});memory.value='';save();render()}
+function answer(k,v){
+ let saved=S.days[td()]||{};
+ if(saved.saved&&!editingToday)return;
+ if(!Object.keys(draft).length) draft={...saved};
+ draft[k]=v; render();
+}
+function saveToday(){
+ let answered=qs.filter(q=>draft[q[0]]!==undefined).length;
+ if(answered<qs.length)return alert('8개 항목을 모두 선택해주세요.');
+ let prev=S.days[td()]||{};
+ S.days[td()]={...prev,...draft,saved:true,savedAt:new Date().toISOString()};
+ draft={};editingToday=false;save();render();
+ setTimeout(()=>alert('TODAY SAVED\n+'+earned(S.days[td()]).toFixed(2)+' LIFE DAYS'),50);
+}
+function editToday(){draft={...(S.days[td()]||{})};editingToday=true;render()}
+function periodEarn(n){let now=new Date(),sum=0;for(let i=0;i<n;i++){let d=new Date(now);d.setDate(now.getDate()-i);let v=S.days[d.toISOString().slice(0,10)];sum+=(v&&v.saved?earned(v):0)}return sum}
+function getStreak(){let n=new Date(),z=0;for(let i=0;i<999;i++){let k=n.toISOString().slice(0,10);if(S.days[k]&&S.days[k].saved)z++;else if(i>0)break;n.setDate(n.getDate()-1)}return z}
+function renderFocus(){
+ let d=S.days[td()]||{};
+ focusChoices.innerHTML=FOCUS.map(x=>`<button class="${d.focus===x?'yes':''}" onclick="setFocus('${x}')">${x}</button>`).join('');
+ focusDoneBtn.textContent=d.focusDone?'✓ DONE':'○ DID YOU DO IT?';
+}
+function setFocus(x){S.days[td()]=S.days[td()]||{};S.days[td()].focus=x;save();render()}
+function toggleFocusDone(){let d=S.days[td()]||{};if(!d.focus)return alert('먼저 이번 주 집중 영역을 선택하세요.');d.focusDone=!d.focusDone;S.days[td()]=d;save();render()}
+function renderMood(){
+ let d=S.days[td()]||{};
+ moodChoices.innerHTML=MOODS.map(x=>`<button class="${d.mood===x?'yes':''}" onclick="setMood('${x}')">${x}</button>`).join('');
+}
+function setMood(x){S.days[td()]=S.days[td()]||{};S.days[td()].mood=x;save();render()});memory.value='';save();render()}
 function drawReview(){
 let now=new Date(),c=0,e=0,x=0,g=0;
 for(let i=0;i<30;i++){
  let d=new Date(now);d.setDate(now.getDate()-i);
  let k=d.toISOString().slice(0,10),v=S.days[k];
- if(v){c++;e+=earned(v);if(v.exercise===true)x++;if(earned(v)>=3)g++}
+ if(v&&v.saved){c++;e+=earned(v);if(v.exercise===true)x++;if(v.mood==='GREAT'||v.mood==='GOOD')g++}
 }
 reviewCheckins.textContent=c;reviewEarn.textContent=e.toFixed(1);
 reviewExercise.textContent=x;reviewGood.textContent=g;
 reviewInsight.textContent=c<7?'7일 이상 기록하면 나만의 패턴을 보여줍니다.':
 `지난 30일 중 ${c}일을 기록했고, 운동한 날은 ${x}일입니다. LIFE DAY는 총 ${e.toFixed(1)}일 적립했습니다.`;
 }
-function drawLife(){let b=new Date(S.p.birth+'T00:00:00'),used=Math.floor((new Date()-b)/(86400000*7)),tot=Math.round(pAge()*52);lifegrid.innerHTML='';for(let i=0;i<tot;i++){let q=document.createElement('i');q.className='wk '+(i<used?'used':i===used?'now':'');lifegrid.appendChild(q)}}
-function drawLog(){let days=Object.keys(S.days).sort().reverse().slice(0,7).map(k=>`<p><b>${k}</b> · +${earned(S.days[k]).toFixed(2)} LIFE DAYS</p>`);let mem=S.mem.slice(0,5).map(x=>`<p><b>${x.date}</b> · ${x.text}</p>`);log.innerHTML=[...days,...mem].join('')||'<span class="muted">아직 기록이 없습니다.</span>'}
+function drawLife(){
+ let b=new Date(S.p.birth+'T00:00:00'),used=Math.floor((new Date()-b)/(86400000*7)),tot=Math.round(pAge()*52),left=Math.max(0,tot-used);
+ weeksLived.textContent=used.toLocaleString();weeksLeft.textContent=left.toLocaleString();
+ lifeRemainPct.textContent=Math.max(0,(left/tot*100)).toFixed(0)+'%';
+ currentAge.textContent=((new Date()-b)/(365.2425*86400000)).toFixed(1);
+ lifeProgressBar.style.width=Math.min(100,used/tot*100)+'%';
+ let year=Math.floor(used/52),week=used%52;miniLife.textContent='YOU ARE HERE · YEAR '+year+' · WEEK '+(week+1);
+ lifegrid.innerHTML='';
+ for(let i=0;i<tot;i++){let q=document.createElement('i');q.className='wk '+(i<used?'used':i===used?'now':'');lifegrid.appendChild(q)}
+ lifegrid.style.display=lifeExpanded?'grid':'none';expandLifeBtn.textContent=lifeExpanded?'HIDE FULL CALENDAR ↑':'VIEW ALL WEEKS →';
+}
+function toggleLifeCalendar(){lifeExpanded=!lifeExpanded;drawLife()}}
+function renderLifeEarned(){
+ let t=totalEarn(),w=periodEarn(7),m=periodEarn(30),s=getStreak();
+ earnedBig.textContent=formatLife(t);earnedWeek.textContent='+'+w.toFixed(2);earnedMonth.textContent='+'+m.toFixed(2);earnedTotal.textContent='+'+t.toFixed(2);earnedStreak.textContent=s;
+ earnedMessage.textContent=t<30?'GOOD DAYS ARE STARTING TO ADD UP.':t<365?'YOU ARE BUILDING MONTHS OF BETTER DAYS.':'YOU HAVE EARNED MORE THAN A YEAR IN YOUR LIFE BANK.';
+}
+function formatLife(d){if(d>=365)return '+'+(d/365).toFixed(1)+' YEARS';if(d>=60)return '+'+(d/30.44).toFixed(1)+' MONTHS';return '+'+d.toFixed(2)+' DAYS'}</b> · +${earned(S.days[k]).toFixed(2)} LIFE DAYS</p>`);let mem=S.mem.slice(0,5).map(x=>`<p><b>${x.date}</b> · ${x.text}</p>`);log.innerHTML=[...days,...mem].join('')||'<span class="muted">아직 기록이 없습니다.</span>'}
+function goTop(){window.scrollTo({top:0,behavior:'smooth'})}
+function goTo(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'})}
+window.addEventListener('scroll',()=>topBtn.classList.toggle('show',window.scrollY>500));
 if(S)show();
 </script></body></html>
