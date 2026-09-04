@@ -40,6 +40,15 @@ html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--fg);f
 <div class="runMetrics"><div class="runMetric"><b id="avgPace">--'--"</b><span>AVG PACE / KM</span></div><div class="runMetric"><b id="lastPace">--'--"</b><span>LAST KM PACE</span></div><div class="runMetric"><b id="cadenceLive">--</b><span>CADENCE SPM*</span></div></div><div class="gpsGrid"><div class="gpsChip"><b id="gpsAccuracy">--</b><span>GPS ACCURACY</span></div><div class="gpsChip"><b id="gpsPoints">0</b><span>ROUTE POINTS</span></div><div class="gpsChip"><b id="runXp">+0</b><span>RUN XP</span></div></div>
 <div class="runActions"><button id="startRunBtn" class="choice primary runStart" onclick="startRun()">START RUN</button><button id="finishRunBtn" class="choice danger runStart hidden" onclick="finishRun()">FINISH RUN</button></div>
 <div id="gpsStatus" class="gps">START RUN을 누르면 위치 권한을 요청합니다. HTTPS와 실제 휴대폰에서 사용하세요.</div>
+<div class="gpsGrid">
+  <div class="gpsChip"><b id="permState">--</b><span>LOCATION PERMISSION</span></div>
+  <div class="gpsChip"><b id="fixCount">0</b><span>RAW GPS FIXES</span></div>
+  <div class="gpsChip"><b id="lastFix">--</b><span>LAST GPS FIX</span></div>
+</div>
+<div class="selectRow" style="margin-top:10px">
+  <button class="choice" onclick="testGpsOnce()">TEST GPS ONCE</button>
+  <button class="choice" onclick="showGpsHelp()">GPS HELP</button>
+</div>
 <div class="voiceToggle"><span class="muted">1km마다 영문 음성 안내</span><div class="selectRow"><button class="choice" onclick="testVoice()">TEST VOICE</button><button id="voiceBtn" class="choice active" onclick="toggleVoice()">VOICE ON</button></div></div><div class="muted" style="margin-top:10px">ROUTE POINTS는 GPS가 실제 이동으로 인정한 지점 수입니다. 달리는 동안 숫자가 계속 증가하고 지도에 선으로 연결됩니다.</div><div id="runMap" class="runMap"></div>
 <div id="lapBox" class="hidden"><table class="laps"><thead><tr><th>KM</th><th>TOTAL</th><th>LAST KM</th><th>AVG</th><th>CADENCE*</th></tr></thead><tbody id="lapRows"></tbody></table></div>
 <p class="muted" style="font-size:11px;margin-top:16px">GPS 경로는 휴대폰 위치정보로 기록합니다. 화면 잠금·백그라운드에서는 브라우저가 GPS/음성을 제한할 수 있어 가능한 한 화면을 켜 둡니다. *케이던스는 휴대폰 동작센서 기반 추정치라 스마트워치/풋팟보다 오차가 클 수 있습니다.</p></div>
@@ -56,13 +65,13 @@ html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--fg);f
 <button id="topBtn" class="topBtn" onclick="goTop()">↑ TOP</button><div class="footer"><span>MAKE TODAY COUNT.</span><span>*GAME / PLANNING METRIC</span></div></div>
 
 <script>
-const KEY='life-v10', OLD=['life-v9','life-v8','life-v7','life-v6'];
+const KEY='life-v12', OLD=['life-v11','life-v10','life-v9','life-v8','life-v7','life-v6'];
 const Q=[['exercise','30분 이상 운동했나요?',20],['strength','근력운동을 했나요?',10],['move','충분히 걷거나 움직였나요?',10],['sleep','7시간 이상 잤나요?',15],['food','건강한 식사를 했나요?',15],['smokefree','오늘 담배를 피우지 않았나요?',10],['people','소중한 사람과 시간을 보냈나요?',10],['growth','배우거나 성장하는 일을 했나요?',10]];
 const FOCUS=['HEALTH','FAMILY','MONEY','WORK','LEARNING','REST'], MOODS=['GREAT','GOOD','OK','BAD'];
 const MISSIONS=['30분 산책하기','잠들기 30분 전 휴대폰 내려놓기','소중한 사람에게 먼저 연락하기','20분 책 읽기','15분 주변 정리하기','평소보다 30분 일찍 잠자리에 들기','10분 햇빛 보며 걷기','미뤄둔 작은 일 하나 끝내기'];
 let raw=localStorage.getItem(KEY); if(!raw) for(const k of OLD){if(localStorage.getItem(k)){raw=localStorage.getItem(k);break}}
 let S=raw?JSON.parse(raw):null,draft={},editingToday=false,lifeExpanded=false,setupState={weight:70,sleep:7,exercise:60,health:2,smoke:0};
-let R={active:false,start:0,watch:null,timer:null,lastPos:null,meters:0,nextKm:1000,lastLapMs:0,laps:[],voice:true,route:[],map:null,line:null,marker:null,wakeLock:null,gpsPoints:0,steps:0,lastLapSteps:0,lastStepAt:0,stepTimes:[],motionOn:false,motionBaseline:null};
+let R={active:false,start:0,watch:null,timer:null,lastPos:null,meters:0,nextKm:1000,lastLapMs:0,laps:[],voice:true,route:[],map:null,line:null,marker:null,wakeLock:null,gpsPoints:0,steps:0,lastLapSteps:0,lastStepAt:0,stepTimes:[],motionOn:false,motionBaseline:null,pollTimer:null,rawFixes:0,lastFixAt:0};
 const td=()=>new Date().toISOString().slice(0,10), save=()=>localStorage.setItem(KEY,JSON.stringify(S));
 function initSetup(){let y=new Date().getFullYear();birthY.innerHTML=Array.from({length:90},(_,i)=>`<option>${y-10-i}</option>`).join('');birthM.innerHTML=Array.from({length:12},(_,i)=>`<option value="${String(i+1).padStart(2,'0')}">${i+1}월</option>`).join('');birthD.innerHTML=Array.from({length:31},(_,i)=>`<option value="${String(i+1).padStart(2,'0')}">${i+1}일</option>`).join('');birthY.value='1976';birthM.value='02';birthD.value='16';renderSetupChoices()}
 function renderSetupChoices(){weightVal.textContent=setupState.weight;let t=Math.floor(setupState.weight/10)*10,o=setupState.weight%10;weightTens.innerHTML=[40,50,60,70,80,90,100,110,120].map(v=>`<button class="choice ${t===v?'active':''}" onclick="setWeightPart('tens',${v})">${v}</button>`).join('');weightOnes.innerHTML=[0,1,2,3,4,5,6,7,8,9].map(v=>`<button class="choice ${o===v?'active':''}" onclick="setWeightPart('ones',${v})">${v}</button>`).join('');sleepChoices.innerHTML=[5,6,7,8,9].map(v=>`<button class="choice ${setupState.sleep===v?'active':''}" onclick="setSetup('sleep',${v})">${v}${v===9?'+':''}시간</button>`).join('');exerciseChoices.innerHTML=[0,30,60,90,150,210].map(v=>`<button class="choice ${setupState.exercise===v?'active':''}" onclick="setSetup('exercise',${v})">${v}${v===210?'+':''}분</button>`).join('');healthChoices.innerHTML=[[2,'좋음'],[1,'보통'],[0,'좋지 않음']].map(x=>`<button class="choice ${setupState.health===x[0]?'active':''}" onclick="setSetup('health',${x[0]})">${x[1]}</button>`).join('');smokeChoices.innerHTML=[[0,'비흡연'],[1,'흡연']].map(x=>`<button class="choice ${setupState.smoke===x[0]?'active':''}" onclick="setSetup('smoke',${x[0]})">${x[1]}</button>`).join('')}
@@ -91,9 +100,71 @@ async function keepScreenAwake(){try{if('wakeLock'in navigator)R.wakeLock=await 
 async function enableMotionCadence(){try{if(typeof DeviceMotionEvent==='undefined')return;if(typeof DeviceMotionEvent.requestPermission==='function'){let p=await DeviceMotionEvent.requestPermission();if(p!=='granted')return}window.addEventListener('devicemotion',onMotion,{passive:true});R.motionOn=true}catch(e){}}
 function onMotion(e){if(!R.active)return;let a=e.acceleration&&[e.acceleration.x,e.acceleration.y,e.acceleration.z].every(v=>typeof v==='number')?e.acceleration:e.accelerationIncludingGravity;if(!a||a.x==null||a.y==null||a.z==null)return;let mag=Math.sqrt(a.x*a.x+a.y*a.y+a.z*a.z);if(R.motionBaseline==null)R.motionBaseline=mag;R.motionBaseline=R.motionBaseline*.94+mag*.06;let delta=Math.abs(mag-R.motionBaseline),now=Date.now();if(delta>1.15&&now-R.lastStepAt>260){R.steps++;R.lastStepAt=now;R.stepTimes.push(now);R.stepTimes=R.stepTimes.filter(t=>now-t<=30000)}}
 function liveCadence(){let now=Date.now(),a=R.stepTimes.filter(t=>now-t<=30000);if(a.length<3)return null;let span=(a[a.length-1]-a[0])/60000;return span>0?Math.round((a.length-1)/span):null}
+
+async function updatePermissionState(){
+  try{
+    if(navigator.permissions && navigator.permissions.query){
+      const s=await navigator.permissions.query({name:'geolocation'});
+      permState.textContent=(s.state||'--').toUpperCase();
+      s.onchange=()=>permState.textContent=(s.state||'--').toUpperCase();
+    }else{
+      permState.textContent='UNKNOWN';
+    }
+  }catch(e){permState.textContent='UNKNOWN'}
+}
+function noteRawFix(p){
+  R.rawFixes++;
+  R.lastFixAt=Date.now();
+  fixCount.textContent=R.rawFixes;
+  lastFix.textContent=new Date().toLocaleTimeString();
+}
+function testGpsOnce(){
+  updatePermissionState();
+  if(!navigator.geolocation){
+    gpsStatus.textContent='이 브라우저는 Geolocation API를 지원하지 않습니다.';
+    return;
+  }
+  gpsStatus.textContent='단일 GPS 위치 요청 중…';
+  navigator.geolocation.getCurrentPosition(
+    p=>{
+      noteRawFix(p);
+      const c=p.coords;
+      gpsStatus.textContent=`GPS TEST OK · lat ${c.latitude.toFixed(5)}, lon ${c.longitude.toFixed(5)}, accuracy ±${Math.round(c.accuracy)}m`;
+      gpsAccuracy.textContent='±'+Math.round(c.accuracy)+'m';
+      initRunMap();
+      if(R.map){
+        R.map.setView([c.latitude,c.longitude],19);
+        if(R.marker)R.marker.setLatLng([c.latitude,c.longitude]);
+      }
+    },
+    e=>{
+      gpsStatus.textContent='GPS TEST FAIL · '+gpsErrorText(e);
+    },
+    {enableHighAccuracy:true,maximumAge:0,timeout:20000}
+  );
+}
+function gpsErrorText(e){
+  if(!e)return 'unknown error';
+  if(e.code===1)return '위치 권한 거부됨';
+  if(e.code===2)return '위치 확인 불가';
+  if(e.code===3)return 'GPS 응답 시간 초과';
+  return e.message||'GPS 오류';
+}
+function showGpsHelp(){
+  alert('GPS가 0으로 멈추면\\n\\n1. 브라우저 주소창의 자물쇠/사이트 설정에서 위치=허용\\n2. 휴대폰 설정에서 브라우저의 위치 권한=허용\\n3. 정밀 위치/정확한 위치=ON\\n4. 실내가 아닌 야외에서 TEST GPS ONCE 실행\\n5. GPS TEST OK가 뜬 뒤 START RUN 실행');
+}
+function pollGps(){
+  if(!R.active || !navigator.geolocation)return;
+  navigator.geolocation.getCurrentPosition(
+    p=>onPos(p),
+    e=>{gpsStatus.textContent='GPS polling · '+gpsErrorText(e)},
+    {enableHighAccuracy:true,maximumAge:1000,timeout:12000}
+  );
+}
 async function startRun(){if(R.active)return;if(!navigator.geolocation)return alert('이 브라우저는 GPS 위치 기능을 지원하지 않습니다.');initRunMap();await keepScreenAwake();await enableMotionCadence();R={...R,active:true,start:Date.now(),lastPos:null,meters:0,nextKm:1000,lastLapMs:0,laps:[],route:[],gpsPoints:0,steps:0,lastLapSteps:0,lastStepAt:0,stepTimes:[],motionBaseline:null};startRunBtn.classList.add('hidden');finishRunBtn.classList.remove('hidden');gpsStatus.textContent='GPS 신호를 찾는 중… 야외에서 10~30초 기다려주세요.';lapRows.innerHTML='';lapBox.classList.add('hidden');runDistance.textContent='0.00';gpsPoints.textContent='0';gpsAccuracy.textContent='--';cadenceLive.textContent='--';R.timer=setInterval(updateRunUI,500);R.watch=navigator.geolocation.watchPosition(onPos,onGpsError,{enableHighAccuracy:true,maximumAge:0,timeout:20000});speak('Run started. GPS searching.')}
 function onPos(p){
   if(!R.active)return;
+  noteRawFix(p);
   const c=p.coords;
   const acc=Math.round(c.accuracy||999);
   gpsAccuracy.textContent='±'+acc+'m';
@@ -105,12 +176,8 @@ function onPos(p){
     return;
   }
 
-  const cur={
-    latitude:c.latitude,
-    longitude:c.longitude,
-    accuracy:c.accuracy||999,
-    time:p.timestamp||Date.now()
-  };
+  const cur={latitude:c.latitude,longitude:c.longitude,accuracy:c.accuracy||999,time:p.timestamp||Date.now()};
+  if(R.lastPos && Math.abs(cur.time-R.lastPos.time)<500 && hav(R.lastPos,cur)<1)return;
 
   if(!R.lastPos){
     R.lastPos=cur;
@@ -144,12 +211,12 @@ function onPos(p){
   }
   updateRunUI();
 }
-function addRoutePoint(c){R.gpsPoints++;gpsPoints.textContent=R.gpsPoints;R.route.push([c.latitude,c.longitude]);if(R.line)R.line.setLatLngs(R.route);if(R.marker)R.marker.setLatLng([c.latitude,c.longitude]);if(R.map){if(R.route.length===1)R.map.setView([c.latitude,c.longitude],17);else if(R.route.length%5===0)R.map.fitBounds(R.line.getBounds(),{padding:[20,20],maxZoom:17})}}
+function addRoutePoint(c){R.gpsPoints++;gpsPoints.textContent=R.gpsPoints;R.route.push([c.latitude,c.longitude]);if(R.line)R.line.setLatLngs(R.route);if(R.marker)R.marker.setLatLng([c.latitude,c.longitude]);if(R.map){if(R.route.length===1)R.map.setView([c.latitude,c.longitude],19);else if(R.route.length%5===0)R.map.fitBounds(R.line.getBounds(),{padding:[20,20],maxZoom:17})}}
 function onGpsError(e){gpsStatus.textContent=e.code===1?'위치 권한이 거부되었습니다. 브라우저 설정에서 위치 권한을 허용해주세요.':e.code===2?'GPS 위치를 확인할 수 없습니다. 야외로 이동해보세요.':'GPS 응답이 늦습니다. 계속 재시도합니다.'}
 function checkLaps(){while(R.meters>=R.nextKm){let elapsed=Date.now()-R.start,lapMs=elapsed-R.lastLapMs,km=R.nextKm/1000,avg=elapsed/km,lapSteps=R.steps-R.lastLapSteps,lapMin=lapMs/60000,cad=lapMin>0&&lapSteps>0?Math.round(lapSteps/lapMin):null;R.laps.push({km,elapsed,lapMs,avg,cad});R.lastLapMs=elapsed;R.lastLapSteps=R.steps;R.nextKm+=1000;renderLaps();speakLap(km,elapsed,lapMs,avg,cad)}}
 function updateRunUI(){if(!R.active)return;let ms=Date.now()-R.start,km=R.meters/1000;runDistance.textContent=km.toFixed(2);runTime.textContent=fmtTime(ms);avgPace.textContent=km>.05?fmtPace(ms/km):"--'--\"";lastPace.textContent=R.laps.length?fmtPace(R.laps[R.laps.length-1].lapMs):"--'--\"";let cad=liveCadence();cadenceLive.textContent=cad||'--';runXp.textContent='+'+Math.round(km*20)}
 function renderLaps(){lapBox.classList.toggle('hidden',!R.laps.length);lapRows.innerHTML=R.laps.map(l=>`<tr><td>${l.km}</td><td>${fmtTime(l.elapsed)}</td><td>${fmtPace(l.lapMs)}</td><td>${fmtPace(l.avg)}</td><td>${l.cad||'--'} spm</td></tr>`).join('')}
-async function finishRun(){if(!R.active)return;let ms=Date.now()-R.start,km=R.meters/1000;if(R.watch!=null)navigator.geolocation.clearWatch(R.watch);clearInterval(R.timer);if(R.motionOn)window.removeEventListener('devicemotion',onMotion);try{if(R.wakeLock)await R.wakeLock.release()}catch(e){}R.active=false;startRunBtn.classList.remove('hidden');finishRunBtn.classList.add('hidden');if(km<.02){gpsStatus.textContent='러닝 종료 · 이동거리가 너무 짧아 저장하지 않았습니다.';speak('Run finished.');return}S.runs.push({date:new Date().toISOString(),km,ms,laps:R.laps,route:R.route,steps:R.steps});let d=S.days[td()]||{};d.exercise=true;S.days[td()]=d;save();let avgCad=ms>0&&R.steps>0?Math.round(R.steps/(ms/60000)):null;gpsStatus.textContent=`SAVED · ${km.toFixed(2)} KM · ${fmtTime(ms)} · AVG ${fmtPace(ms/km)}/KM${avgCad?' · CAD '+avgCad+' spm':''}`;speak(`Run finished. Distance ${km.toFixed(2)} kilometers. Average pace ${paceWords(ms/km)} per kilometer.`);render()}
+async function finishRun(){if(!R.active)return;let ms=Date.now()-R.start,km=R.meters/1000;if(R.watch!=null)navigator.geolocation.clearWatch(R.watch);clearInterval(R.timer); if(R.pollTimer)clearInterval(R.pollTimer);if(R.motionOn)window.removeEventListener('devicemotion',onMotion);try{if(R.wakeLock)await R.wakeLock.release()}catch(e){}R.active=false;startRunBtn.classList.remove('hidden');finishRunBtn.classList.add('hidden');if(km<.02){gpsStatus.textContent='러닝 종료 · 이동거리가 너무 짧아 저장하지 않았습니다.';speak('Run finished.');return}S.runs.push({date:new Date().toISOString(),km,ms,laps:R.laps,route:R.route,steps:R.steps});let d=S.days[td()]||{};d.exercise=true;S.days[td()]=d;save();let avgCad=ms>0&&R.steps>0?Math.round(R.steps/(ms/60000)):null;gpsStatus.textContent=`SAVED · ${km.toFixed(2)} KM · ${fmtTime(ms)} · AVG ${fmtPace(ms/km)}/KM${avgCad?' · CAD '+avgCad+' spm':''}`;speak(`Run finished. Distance ${km.toFixed(2)} kilometers. Average pace ${paceWords(ms/km)} per kilometer.`);render()}
 function fmtTime(ms){let s=Math.max(0,Math.floor(ms/1000)),h=Math.floor(s/3600),m=Math.floor((s%3600)/60),x=s%60;return[h,m,x].map(v=>String(v).padStart(2,'0')).join(':')}
 function fmtPace(ms){let s=Math.max(0,Math.round(ms/1000)),m=Math.floor(s/60),x=s%60;return`${m}'${String(x).padStart(2,'0')}\"`}
 function paceWords(ms){let s=Math.round(ms/1000),m=Math.floor(s/60),x=s%60;return`${m} minutes ${x} seconds`}
@@ -158,5 +225,5 @@ function speakLap(km,total,lap,avg,cad){let msg=`${km} kilometer${km>1?'s':''}. 
 function speak(t){if(!R.voice||!('speechSynthesis'in window))return;try{speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.95;u.pitch=1;speechSynthesis.speak(u)}catch(e){}}
 function testVoice(){speak('Voice test. One kilometer. Total time six minutes. Average pace six minutes per kilometer.')}
 function toggleVoice(){R.voice=!R.voice;voiceBtn.textContent=R.voice?'VOICE ON':'VOICE OFF';voiceBtn.classList.toggle('active',R.voice);if(R.voice)testVoice()}
-function goTop(){window.scrollTo({top:0,behavior:'smooth'})}function goTo(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'})}window.addEventListener('scroll',()=>topBtn.classList.toggle('show',window.scrollY>500));window.addEventListener('beforeunload',e=>{if(R.active){e.preventDefault();e.returnValue=''}});initSetup();if(S){normalize();save();show()}
+function goTop(){window.scrollTo({top:0,behavior:'smooth'})}function goTo(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'})}window.addEventListener('scroll',()=>topBtn.classList.toggle('show',window.scrollY>500));window.addEventListener('beforeunload',e=>{if(R.active){e.preventDefault();e.returnValue=''}});initSetup();updatePermissionState();if(S){normalize();save();show()}
 </script></body></html>
